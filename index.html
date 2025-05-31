@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Prompt Filter Syariah</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f3f6f4;
+      color: #333;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      border-radius: 8px;
+    }
+    button, select {
+      margin-top: 10px;
+      padding: 10px 15px;
+      background: #2d8a61;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #output {
+      margin-top: 20px;
+      padding: 15px;
+      background: #fffbe0;
+      border-left: 5px solid #c2a300;
+    }
+    #copyBtn, #sendBtn {
+      background: #007bff;
+      margin-right: 10px;
+    }
+    #aiSelect {
+      background: #444;
+      color: white;
+      margin-top: 10px;
+      border-radius: 6px;
+      padding: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Filter Prompt AI Syariah</h2>
+  <p>Masukkan prompt yang ingin kamu gunakan, dan sistem akan mengecek adakah pelanggaran syariah sebelum dikirim ke AI:</p>
+
+  <textarea id="promptInput" placeholder="Masukkan prompt kamu di sini..."></textarea>
+  <br>
+  <button onclick="filterPrompt()">Periksa</button>
+
+  <div id="output"></div>
+
+  <script>
+    const syubhatWords = [
+      "bugil", "telanjang", "seksi", "payudara", "bokong", "aurat", "porno", "fetish",
+      "hantu", "jin", "iblis", "setan", "iluminati", "ritual darah", "dewa", "dewi", "berciuman", "semok",
+      "bikini", "celana dalam", "ketiak", "montok", "chuby", "bh", "jilat", "memeluk", "kemaluan", "vagina", "penis",
+      "mulus", "terlentang", "tanktop", "lingering", "pornografi", 
+      "erotis", "erotika", "cabul", "percabulan", "mesum", "vulgar",
+      "eksibiosionisme", "voyeurisme", "lonte", "lendir", "bokep",
+      "mesum digital", "pelecehan", "seksual", "sensual", "sensualitas", "gairah", "menggoda", "genit", "menggairahkan", "Dewasa", "menggigit bibir", "pesona", "rayuan", "feminin",  "manja", "lentik", "menggemaskan", "menggiurkan", "buah dada", "dada montok", "pantat", "pinggul", "lekuk tubuh", "Tubuh semok", "kemaluan wanita", "miss V", "puting", "tubuh telanjang", "aur", "molek", "lingerie", "g-string", "celana ketat", "pose vulgar", "model seksi", "adegan ranjang"
+    ];
+
+    const aiLinks = {
+      "ChatGPT": "https://chat.openai.com/",
+      "Meta": "https://llama.meta.com/",
+      "Grok": "https://x.com/grok",
+      "Gemini": "https://gemini.google.com/",
+      "Copilot": "https://copilot.microsoft.com/"
+    };
+
+    function filterPrompt() {
+      const input = document.getElementById("promptInput").value.toLowerCase();
+      const output = document.getElementById("output");
+
+      const found = syubhatWords.filter(word => input.includes(word));
+
+      if (found.length > 0) {
+        output.innerHTML = `
+          ⚠️ <strong>Prompt ditolak karena mengandung kata tidak sesuai syariat:</strong><br>
+          <em>${found.join(', ')}</em><br><br>
+          🕋 <strong>Nasihat:</strong> 
+          "Sesungguhnya orang yang takut kepada Allah saat sendiri adalah orang bertakwa sejati." (HR. Bukhari)<br>
+          Mari jaga niat dan gunakan teknologi untuk kebaikan. 🤲
+        `;
+      } else {
+        output.innerHTML = `
+          ✅ <strong>Prompt aman menurut syariat.</strong><br>
+          Silakan lanjutkan dengan niat lillahi ta'ala.<br><br>
+          <button id="copyBtn" onclick="copyPrompt()">📋 Copy Prompt</button>
+          <select id="aiSelect">
+            <option value="ChatGPT">ChatGPT</option>
+            <option value="Meta">Meta (LLaMA)</option>
+            <option value="Grok">Grok</option>
+            <option value="Gemini">Gemini</option>
+            <option value="Copilot">Copilot</option>
+          </select>
+          <button id="sendBtn" onclick="sendToAILink()">🌐 Buka AI & Paste Prompt</button>
+        `;
+      }
+    }
+
+    function copyPrompt() {
+      const promptText = document.getElementById("promptInput").value;
+      navigator.clipboard.writeText(promptText).then(() => {
+        alert("✅ Prompt berhasil disalin ke clipboard!");
+      }).catch(err => {
+        alert("❌ Gagal menyalin prompt.");
+      });
+    }
+
+    function sendToAILink() {
+      const promptText = document.getElementById("promptInput").value;
+      const selectedAI = document.getElementById("aiSelect").value;
+      const link = aiLinks[selectedAI];
+
+      // Salin ke clipboard dan buka tab baru ke situs AI
+      navigator.clipboard.writeText(promptText).then(() => {
+        window.open(link, '_blank');
+        alert(`📋 Prompt disalin. Silakan paste di ${selectedAI} setelah terbuka.`);
+      }).catch(err => {
+        alert("❌ Gagal menyalin prompt.");
+      });
+    }
+  </script>
+</body>
+</html>
+
