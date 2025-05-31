@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Prompt Filter Syariah</title>
   <style>
     body {
@@ -9,12 +10,17 @@
       padding: 20px;
       background: #f3f6f4;
       color: #333;
+      max-width: 800px;
+      margin: auto;
     }
     textarea {
       width: 100%;
-      height: 100px;
-      padding: 10px;
+      height: 120px;
+      padding: 12px;
       border-radius: 8px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 16px;
     }
     button, select {
       margin-top: 10px;
@@ -24,16 +30,22 @@
       border: none;
       border-radius: 6px;
       cursor: pointer;
+      font-size: 15px;
+    }
+    button:hover, select:hover {
+      opacity: 0.95;
     }
     #output {
       margin-top: 20px;
       padding: 15px;
       background: #fffbe0;
       border-left: 5px solid #c2a300;
+      border-radius: 6px;
     }
     #copyBtn, #sendBtn {
       background: #007bff;
       margin-right: 10px;
+      margin-top: 10px;
     }
     #aiSelect {
       background: #444;
@@ -41,6 +53,21 @@
       margin-top: 10px;
       border-radius: 6px;
       padding: 8px;
+      width: 100%;
+    }
+
+    @media (min-width: 600px) {
+      #actionButtons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      #aiSelect {
+        width: auto;
+        flex-grow: 1;
+      }
     }
   </style>
 </head>
@@ -91,15 +118,17 @@
         output.innerHTML = `
           ✅ <strong>Prompt aman menurut syariat.</strong><br>
           Silakan lanjutkan dengan niat lillahi ta'ala.<br><br>
-          <button id="copyBtn" onclick="copyPrompt()">📋 Copy Prompt</button>
-          <select id="aiSelect">
-            <option value="ChatGPT">ChatGPT</option>
-            <option value="Meta">Meta (LLaMA)</option>
-            <option value="Grok">Grok</option>
-            <option value="Gemini">Gemini</option>
-            <option value="Copilot">Copilot</option>
-          </select>
-          <button id="sendBtn" onclick="sendToAILink()">🌐 Buka AI & Paste Prompt</button>
+          <div id="actionButtons">
+            <button id="copyBtn" onclick="copyPrompt()">📋 Copy Prompt</button>
+            <select id="aiSelect">
+              <option value="ChatGPT">ChatGPT</option>
+              <option value="Meta">Meta (LLaMA)</option>
+              <option value="Grok">Grok</option>
+              <option value="Gemini">Gemini</option>
+              <option value="Copilot">Copilot</option>
+            </select>
+            <button id="sendBtn" onclick="sendToAILink()">🌐 Buka AI & Paste Prompt</button>
+          </div>
         `;
       }
     }
@@ -118,7 +147,6 @@
       const selectedAI = document.getElementById("aiSelect").value;
       const link = aiLinks[selectedAI];
 
-      // Salin ke clipboard dan buka tab baru ke situs AI
       navigator.clipboard.writeText(promptText).then(() => {
         window.open(link, '_blank');
         alert(`📋 Prompt disalin. Silakan paste di ${selectedAI} setelah terbuka.`);
@@ -129,4 +157,3 @@
   </script>
 </body>
 </html>
-
